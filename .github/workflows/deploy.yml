@@ -15,8 +15,6 @@ jobs:
       contents: read
     steps:
     - uses: actions/checkout@v4
-      with:
-        ref: master
 
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v1
@@ -32,8 +30,11 @@ jobs:
         password: ${{ secrets.GHCR_TOKEN }}
           
     - name: Set environment variables
-      run: echo RELEASE=$(cat ./src/package.json | jq -r .release) >> $GITHUB_ENV
+      run: echo "RELEASE=$(jq -r .release < ./package.json)" >> $GITHUB_ENV  # Убедитесь, что путь верный
     
+    - name: Debug RELEASE value
+      run: echo "RELEASE=${{ env.RELEASE }}"  # Для отладки
+
     - name: Build & Publish Docker Image
       uses: docker/build-push-action@v5
       with:
