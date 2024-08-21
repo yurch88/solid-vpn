@@ -28,7 +28,7 @@ jobs:
       with:
         registry: ghcr.io
         username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+        password: ${{ secrets.GHCR_TOKEN }}
           
     - name: Set environment variables
       run: echo RELEASE=$(cat ./src/package.json | jq -r .release) >> $GITHUB_ENV
@@ -38,4 +38,4 @@ jobs:
       with:
         push: true
         platforms: linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64/v8
-        tags: ghcr.io/yurch88/solid-vpn:nightly, ghcr.io/yurch88/solid-vpn:${{ env.RELEASE }}-nightly  # Замените на ваш репозиторий
+        tags: ghcr.io/yurch88/solid-vpn:nightly, ghcr.io/yurch88/solid-vpn:${{ env.RELEASE }}-nightly
