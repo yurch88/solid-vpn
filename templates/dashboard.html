@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #ffffff;
+            border-bottom: 1px solid #ddd;
+        }
+        .navbar img {
+            height: 40px;
+        }
+        .navbar .buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .navbar .buttons button {
+            background-color: #4261a8;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 10px 15px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .navbar .buttons button:hover {
+            background-color: #2854a6;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo">
+        <div class="buttons">
+            <button onclick="addUser()">Add User</button>
+            <button onclick="logout()">Logout</button>
+        </div>
+    </div>
+
+    <script>
+        function addUser() {
+            alert('Add User functionality coming soon!');
+        }
+
+        function logout() {
+            window.location.href = "/logout";
+        }
+    </script>
+</body>
+</html>
