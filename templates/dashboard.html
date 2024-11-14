@@ -27,7 +27,7 @@
             gap: 10px;
         }
         .navbar .buttons button {
-            background-color: #66758d; /* Corrected button color */
+            background-color: #66758d;
             color: white;
             border: none;
             border-radius: 20px;
@@ -58,26 +58,25 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         .user-container .user button {
-            background-color: #ccc; /* Updated color to match the disabled switch */
+            background-color: #ccc;
             color: white;
             border: none;
-            padding: 10px; /* Ensures button size is consistent */
+            padding: 10px;
             border-radius: 5px;
             cursor: pointer;
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 40px; /* Ensure icons fill the button */
-            height: 40px; /* Ensure icons fill the button */
+            width: 40px;
+            height: 40px;
         }
         .user-container .user button img {
-            width: 30px; /* Increased size of the trash icon */
-            height: 30px; /* Increased size of the trash icon */
+            width: 30px;
+            height: 30px;
         }
-        /* Specific style for the delete icon to make it larger */
         .user-container .user button img[src*="recycle.png"] {
-            width: 40px; /* Increased size of the trash icon */
-            height: 40px; /* Increased size of the trash icon */
+            width: 40px;
+            height: 40px;
         }
         .user-container .user button:hover {
             background-color: #4261a8;
@@ -100,7 +99,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: #ccc; /* Disabled color */
+            background-color: #ccc;
             transition: .4s;
             border-radius: 34px;
         }
@@ -116,7 +115,7 @@
             transition: .4s;
         }
         input:checked + .slider {
-            background-color: #66758d; /* Active color */
+            background-color: #66758d;
         }
         input:checked + .slider:before {
             transform: translateX(26px);
@@ -125,6 +124,10 @@
             display: flex;
             gap: 10px;
             align-items: center;
+        }
+        .user-container .user small {
+            font-size: 10px;
+            color: gray;
         }
     </style>
 </head>
@@ -141,16 +144,19 @@
         <h3>Users</h3>
         {% for user in users %}
         <div class="user">
-            <span>{{ user }}</span>
+            <span>
+                {{ user[0] }} <br>
+                <small>Created on {{ user[1]["created_at"] }}</small>
+            </span>
             <div class="action-buttons">
                 <label class="switch">
-                    <input type="checkbox" id="toggle-{{ user }}" onchange="toggleUser('{{ user }}')">
+                    <input type="checkbox" id="toggle-{{ user[0] }}" onchange="toggleUser('{{ user[0] }}')">
                     <span class="slider"></span>
                 </label>
-                <button onclick="downloadConfig('{{ user }}')">
+                <button onclick="downloadConfig('{{ user[0] }}')">
                     <img src="{{ url_for('static', filename='images/download.png') }}" alt="Download">
                 </button>
-                <button onclick="deleteConfig('{{ user }}')">
+                <button onclick="deleteConfig('{{ user[0] }}')">
                     <img src="{{ url_for('static', filename='images/recycle.png') }}" alt="Delete">
                 </button>
             </div>
@@ -179,7 +185,6 @@
         }
 
         function toggleUser(username) {
-            // Toggle user enable/disable state
             fetch(`/toggle_user/${username}`, { method: 'POST' });
         }
 

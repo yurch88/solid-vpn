@@ -2,6 +2,8 @@ from flask import Flask, render_template, redirect, url_for, request, send_file
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 import os
 import subprocess
+import json
+from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = "your_secret_key"
@@ -21,8 +23,23 @@ def load_user(user_id):
 
 # Directory to store WireGuard configuration files
 WG_CONFIG_DIR = "/etc/wireguard"
+USER_DATA_FILE = "/etc/wireguard/users.json"  # File to store user metadata
+
 your_server_public_key = "<YOUR_SERVER_PUBLIC_KEY>"  # Replace with your actual server public key
 your_server_ip = "<YOUR_SERVER_IP>"  # Replace with your actual server IP
+
+# Ensure user data file exists
+if not os.path.exists(USER_DATA_FILE):
+    with open(USER_DATA_FILE, "w") as f:
+        json.dump({}, f)
+
+def load_user_data():
+    with open(USER_DATA_FILE, "r") as f:
+        return json.load(f)
+
+def save_user_data(data):
+    with open(USER_DATA_FILE, "w") as f:
+        json.dump(data, f, indent=4)
 
 @app.route("/")
 def index():
@@ -43,9 +60,11 @@ def login():
 @app.route("/dashboard")
 @login_required
 def dashboard():
-    # Get list of users (configuration files in /etc/wireguard)
-    users = [f.replace(".conf", "") for f in os.listdir(WG_CONFIG_DIR) if f.endswith(".conf")]
-    return render_template("dashboard.html", user=current_user, users=users)
+    # Load user data
+    user_data = load_user_data()
+    # Sort users by creation date
+    sorted_users = sorted(user_data.items(), key=lambda x: x[1]["created_at"])
+    return render_template("dashboard.html", user=current_user, users=sorted_users)
 
 @app.route("/logout")
 @login_required
@@ -58,6 +77,12 @@ def logout():
 def add_user():
     username = request.form.get("username")
     if username:
+        # Load user data
+        user_data = load_user_data()
+
+        if username in user_data:
+            return "User already exists", 400
+
         # Generate a new WireGuard configuration for the user
         user_config_path = os.path.join(WG_CONFIG_DIR, f"{username}.conf")
 
@@ -82,6 +107,10 @@ def add_user():
         with open(user_config_path, "w") as f:
             f.write(config)
 
+        # Add user metadata
+        user_data[username] = {"created_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+        save_user_data(user_data)
+
         return redirect(url_for("dashboard"))
 
     return redirect(url_for("dashboard"))
@@ -100,8 +129,14 @@ def delete_config(username):
     config_path = os.path.join(WG_CONFIG_DIR, f"{username}.conf")
     if os.path.exists(config_path):
         os.remove(config_path)
-        return "Config file deleted", 200
-    return "Config file not found", 404
+
+    # Remove user metadata
+    user_data = load_user_data()
+    if username in user_data:
+        del user_data[username]
+        save_user_data(user_data)
+
+    return "Config file deleted", 200
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5001)
