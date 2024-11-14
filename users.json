@@ -1,7 +1,12 @@
 {
-    "firstone": {
-        "created_at": "2024-11-14 22:40:56",
-        "config_path": "/etc/wireguard/firstone.conf",
+    "one": {
+        "created_at": "2024-11-14 23:00:06",
+        "config_path": "/etc/wireguard/one.conf",
+        "active": true
+    },
+    "two": {
+        "created_at": "2024-11-14 23:00:09",
+        "config_path": "/etc/wireguard/two.conf",
         "active": true
     }
 }

@@ -13,14 +13,10 @@
         }
         .navbar {
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-end;
             align-items: center;
             padding: 10px 20px;
             background-color: #ffffff;
-            border-bottom: 1px solid #ddd;
-        }
-        .navbar img {
-            height: 40px;
         }
         .navbar .buttons {
             display: flex;
@@ -52,6 +48,15 @@
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             margin-top: 20px;
+            position: relative;
+        }
+        .user-container .logo-container {
+            text-align: center; /* Центровка логотипа */
+            margin-bottom: 20px;
+        }
+        .user-container .logo-container img {
+            max-width: 35%; /* Логотип занимает до 20% ширины блока */
+            height: auto;
         }
         .user-container .user {
             display: flex;
@@ -139,7 +144,6 @@
 </head>
 <body>
     <div class="navbar">
-        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo">
         <div class="buttons">
             <button onclick="addUser()">Add User</button>
             <img src="{{ url_for('static', filename='images/logout.png') }}" alt="Logout" onclick="logout()">
@@ -147,7 +151,10 @@
     </div>
 
     <div class="user-container">
-        <h3>Users</h3>
+        <!-- Логотип ограничен до 20% ширины блока -->
+        <div class="logo-container">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo">
+        </div>
         <div id="user-list">
             {% for user in users %}
             <div class="user" id="user-{{ user[0] }}">
