@@ -39,7 +39,7 @@ def save_user_data(data):
 
 def get_server_info():
     try:
-        output = subprocess.check_output(["wg", "show"], text=True)
+        output = subprocess.check_output(["wg", "show"], text=True, stderr=subprocess.DEVNULL)
         lines = output.splitlines()
         server_info = {}
         for line in lines:
@@ -57,11 +57,11 @@ def get_server_info():
                     server_info["allowed_ips"] = line.split("=")[1].strip()
                 if "DNS" in line:
                     server_info["dns"] = line.split("=")[1].strip()
-        # Убедимся, что DNS и AllowedIPs присутствуют
         server_info["allowed_ips"] = server_info.get("allowed_ips", "")
         server_info["dns"] = server_info.get("dns", "")
         return server_info
-    except Exception:
+    except Exception as e:
+        print(f"Error getting server info: {e}")
         return None
 
 @app.route("/")
@@ -89,6 +89,13 @@ def dashboard():
         "dashboard.html", user=current_user, users=user_data.items(), server_info=server_info
     )
 
+@app.route("/get_users")
+@login_required
+def get_users():
+    """Return the current list of users as JSON."""
+    user_data = load_user_data()
+    return jsonify(user_data)
+
 @app.route("/logout")
 @login_required
 def logout():
@@ -102,7 +109,7 @@ def add_user():
     if username:
         user_data = load_user_data()
         if username in user_data:
-            return "User already exists", 400
+            return jsonify({"status": "error", "message": "User already exists"}), 400
 
         private_key = subprocess.check_output(["wg", "genkey"]).decode("utf-8").strip()
         public_key = subprocess.check_output(
@@ -112,7 +119,7 @@ def add_user():
 
         server_info = get_server_info()
         if not server_info:
-            return "Server not configured", 500
+            return jsonify({"status": "error", "message": "Server not configured"}), 500
 
         client_config = f"""[Interface]
 PrivateKey = {private_key}
@@ -134,11 +141,23 @@ PersistentKeepalive = 25
         user_data[username] = {
             "created_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             "config_path": user_config_path,
+            "active": True  # Toggle is enabled by default
         }
         save_user_data(user_data)
 
-        return redirect(url_for("dashboard"))
-    return redirect(url_for("dashboard"))
+        return jsonify({"status": "success", "user": (username, user_data[username])})
+    return jsonify({"status": "error", "message": "Invalid username"}), 400
+
+@app.route("/toggle_user/<username>", methods=["POST"])
+@login_required
+def toggle_user(username):
+    user_data = load_user_data()
+    if username in user_data:
+        current_status = user_data[username].get("active", True)
+        user_data[username]["active"] = not current_status
+        save_user_data(user_data)
+        return jsonify({"status": "success", "active": user_data[username]["active"]})
+    return jsonify({"status": "error", "message": "User not found"}), 404
 
 @app.route("/download_config/<username>")
 @login_required
@@ -160,7 +179,7 @@ def delete_config(username):
             os.remove(config_path)
         del user_data[username]
         save_user_data(user_data)
-    return "Config deleted", 200
+    return jsonify({"status": "success"}), 200
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5001)
