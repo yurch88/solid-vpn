@@ -5,17 +5,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <style>
-        /* Стили оставлены без изменений */
-        body { margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #ffffff; }
-        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background-color: #ffffff; border-bottom: 1px solid #ddd; }
-        .navbar img { height: 40px; }
-        .navbar .buttons { display: flex; gap: 10px; }
-        .navbar .buttons button { background-color: #66758d; color: white; border: none; border-radius: 20px; padding: 10px 15px; font-size: 14px; cursor: pointer; }
-        .navbar .buttons button:hover { background-color: #4261a8; }
-        .user-container { width: 400px; margin: 0 auto; padding: 20px; background-color: #f7f7f7; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); margin-top: 20px; }
-        .user-container .user { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; background-color: #ffffff; padding: 10px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #ffffff;
+            border-bottom: 1px solid #ddd;
+        }
+        .navbar img {
+            height: 40px;
+        }
+        .navbar .buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .navbar .buttons button {
+            background-color: #66758d;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 10px 15px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .navbar .buttons button:hover {
+            background-color: #4261a8;
+        }
+        .navbar .buttons img {
+            width: 40px; /* Пропорциональная ширина */
+            height: 40px; /* Пропорциональная высота */
+            object-fit: contain; /* Сохраняем пропорции */
+            cursor: pointer;
+        }
+        .user-container {
+            width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f7f7f7;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        .user-container .user {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            background-color: #ffffff;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
         .user-container .user button {
-            background-color: #f7f7f7; /* Изменен цвет кнопок на светлый оттенок */
+            background-color: #f7f7f7;
             color: white;
             border: none;
             padding: 10px;
@@ -24,28 +73,68 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 50px; /* Установлен одинаковый размер кнопок */
-            height: 50px; /* Установлен одинаковый размер кнопок */
+            width: 50px;
+            height: 50px;
         }
         .user-container .user button img {
-            width: 30px; /* Установлен одинаковый размер для иконок */
-            height: 30px; /* Установлен одинаковый размер для иконок */
+            width: 30px;
+            height: 30px;
         }
         .user-container .user button img[src*="recycle.png"] {
-            width: 19px; /* Приведение размера иконки к общему стилю */
-            height: 19px; /* Приведение размера иконки к общему стилю */
+            width: 19px;
+            height: 19px;
         }
         .user-container .user button:hover {
-            background-color: #e0e0e0; /* Изменен цвет при наведении для лучшей читаемости */
+            background-color: #e0e0e0;
         }
-        .switch { position: relative; display: inline-block; width: 50px; height: 25px; }
-        .switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px; }
-        .slider:before { position: absolute; content: ""; height: 15px; width: 15px; border-radius: 50px; left: 4px; bottom: 4px; background-color: white; transition: .4s; }
-        input:checked + .slider { background-color: #66758d; }
-        input:checked + .slider:before { transform: translateX(26px); }
-        .user-container .user .action-buttons { display: flex; gap: 10px; align-items: center; }
-        .user-container .user small { font-size: 10px; color: gray; }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 25px;
+        }
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 15px;
+            width: 15px;
+            border-radius: 50px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+        }
+        input:checked + .slider {
+            background-color: #66758d;
+        }
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        .user-container .user .action-buttons {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .user-container .user small {
+            font-size: 10px;
+            color: gray;
+        }
     </style>
 </head>
 <body>
@@ -53,7 +142,7 @@
         <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo">
         <div class="buttons">
             <button onclick="addUser()">Add User</button>
-            <button onclick="logout()">Logout</button>
+            <img src="{{ url_for('static', filename='images/logout.png') }}" alt="Logout" onclick="logout()">
         </div>
     </div>
 
@@ -98,7 +187,6 @@
                         const user = data.user;
                         const userList = document.getElementById("user-list");
 
-                        // Create new user element dynamically
                         const newUser = document.createElement("div");
                         newUser.className = "user";
                         newUser.id = `user-${user[0]}`;
@@ -109,7 +197,7 @@
                             </span>
                             <div class="action-buttons">
                                 <label class="switch">
-                                    <input type="checkbox" id="toggle-${user[0]}" onchange="toggleUser('${user[0]}')" ${user[1]["active"] ? "checked" : ""}>
+                                    <input type="checkbox" id="toggle-${user[0]}" onchange="toggleUser('${user[0]}')" checked>
                                     <span class="slider"></span>
                                 </label>
                                 <button onclick="downloadConfig('${user[0]}')">

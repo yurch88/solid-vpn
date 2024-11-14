@@ -1,37 +1,7 @@
 {
-    "user1": {
-        "created_at": "2024-11-14 20:55:54",
-        "config_path": "/etc/wireguard/user1.conf",
-        "active": true
-    },
-    "user2": {
-        "created_at": "2024-11-14 20:55:58",
-        "config_path": "/etc/wireguard/user2.conf",
-        "active": true
-    },
-    "user3": {
-        "created_at": "2024-11-14 20:56:01",
-        "config_path": "/etc/wireguard/user3.conf",
-        "active": true
-    },
-    "user4": {
-        "created_at": "2024-11-14 20:56:04",
-        "config_path": "/etc/wireguard/user4.conf",
-        "active": true
-    },
-    "user5": {
-        "created_at": "2024-11-14 20:56:07",
-        "config_path": "/etc/wireguard/user5.conf",
-        "active": true
-    },
-    "user6": {
-        "created_at": "2024-11-14 20:56:12",
-        "config_path": "/etc/wireguard/user6.conf",
-        "active": true
-    },
-    "user7": {
-        "created_at": "2024-11-14 20:56:16",
-        "config_path": "/etc/wireguard/user7.conf",
+    "firstone": {
+        "created_at": "2024-11-14 22:40:56",
+        "config_path": "/etc/wireguard/firstone.conf",
         "active": true
     }
 }
