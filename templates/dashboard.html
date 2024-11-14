@@ -14,23 +14,29 @@
         .navbar .buttons button:hover { background-color: #4261a8; }
         .user-container { width: 400px; margin: 0 auto; padding: 20px; background-color: #f7f7f7; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); margin-top: 20px; }
         .user-container .user { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; background-color: #ffffff; padding: 10px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); }
-        .user-container .user button { 
+        .user-container .user button {
             background-color: #f7f7f7; /* Изменен цвет кнопок на светлый оттенок */
-            color: white; 
-            border: none; 
-            padding: 10px; 
-            border-radius: 5px; 
-            cursor: pointer; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            width: 40px; 
-            height: 40px; 
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 50px; /* Установлен одинаковый размер кнопок */
+            height: 50px; /* Установлен одинаковый размер кнопок */
         }
-        .user-container .user button img { width: 30px; height: 30px; }
-        .user-container .user button img[src*="recycle.png"] { width: 40px; height: 40px; }
-        .user-container .user button:hover { 
-            background-color: #f7f7f7; /* Изменен цвет при наведении на светлый оттенок */
+        .user-container .user button img {
+            width: 30px; /* Установлен одинаковый размер для иконок */
+            height: 30px; /* Установлен одинаковый размер для иконок */
+        }
+        .user-container .user button img[src*="recycle.png"] {
+            width: 20px; /* Приведение размера иконки к общему стилю */
+            height: 20px; /* Приведение размера иконки к общему стилю */
+        }
+        .user-container .user button:hover {
+            background-color: #e0e0e0; /* Изменен цвет при наведении для лучшей читаемости */
         }
         .switch { position: relative; display: inline-block; width: 50px; height: 25px; }
         .switch input { opacity: 0; width: 0; height: 0; }

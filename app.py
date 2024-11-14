@@ -182,4 +182,4 @@ def delete_config(username):
     return jsonify({"status": "success"}), 200
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=5001)
+    app.run(debug=True, host="0.0.0.0", port=5002)
