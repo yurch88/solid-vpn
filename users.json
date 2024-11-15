@@ -1,16 +1,16 @@
 {
     "one": {
-        "created_at": "2024-11-15 00:49:47",
+        "created_at": "2024-11-15 00:59:07",
         "config_path": "/etc/wireguard/one.conf",
         "active": true
     },
     "two": {
-        "created_at": "2024-11-15 00:49:50",
+        "created_at": "2024-11-15 00:59:11",
         "config_path": "/etc/wireguard/two.conf",
         "active": true
     },
     "three": {
-        "created_at": "2024-11-15 00:49:57",
+        "created_at": "2024-11-15 00:59:14",
         "config_path": "/etc/wireguard/three.conf",
         "active": true
     }
