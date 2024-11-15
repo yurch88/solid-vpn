@@ -22,7 +22,12 @@ def load_user(user_id):
     return User(user_id)
 
 # Paths and defaults
-WG_CONFIG_DIR = "/etc/wireguard"
+WG_CONFIG_DIR = os.getenv("WG_CONFIG_DIR", "/etc/wireguard")
+WG_INTERFACE = os.getenv("WG_INTERFACE", "wg0")
+WG_PORT = os.getenv("WG_PORT", "51820")
+WG_HOST = os.getenv("WG_HOST", "127.0.0.1")
+WG_DEFAULT_NETWORK = os.getenv("WG_DEFAULT_NETWORK", "10.8.0.0/24")
+WG_ALLOWED_IPS = os.getenv("WG_ALLOWED_IPS", "0.0.0.0/0, ::/0")
 USER_DATA_FILE = "users.json"
 
 if not os.path.exists(USER_DATA_FILE):
