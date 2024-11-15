@@ -23,7 +23,7 @@
         }
         .user-container .logo-container {
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
             position: relative;
@@ -31,14 +31,15 @@
         .user-container .logo-container img {
             max-width: 35%;
             height: auto;
-            margin-right: auto; /* Ensures the logo stays centered */
+            margin-left: auto;
+            margin-right: auto;
         }
         .user-container .logo-container .action-buttons {
-            position: absolute;
-            right: 0;
             display: flex;
             gap: 10px;
             align-items: center;
+            position: absolute;
+            right: 0; /* Сдвиг кнопок максимально вправо */
         }
         .user-container .logo-container .add-user-btn {
             width: 19px; /* #<-------------------------add user */
@@ -81,8 +82,8 @@
             object-fit: contain;
         }
         .user-container .user button img[src*="download.png"] {
-            width: 24px; /* #<-------------------------download cfg */
-            height: 24px; /* #<-------------------------download cfg */
+            width: 27px; /* #<-------------------------download cfg */
+            height: 27px; /* #<-------------------------download cfg */
         }
         .user-container .user button:hover {
             background-color: #e0e0e0;
