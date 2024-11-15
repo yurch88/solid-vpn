@@ -11,35 +11,6 @@
             font-family: Arial, sans-serif;
             background-color: #ffffff;
         }
-        .navbar {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            padding: 10px 20px;
-            background-color: #ffffff;
-        }
-        .navbar .buttons {
-            display: flex;
-            gap: 10px;
-        }
-        .navbar .buttons button {
-            background-color: #66758d;
-            color: white;
-            border: none;
-            border-radius: 20px;
-            padding: 10px 15px;
-            font-size: 14px;
-            cursor: pointer;
-        }
-        .navbar .buttons button:hover {
-            background-color: #4261a8;
-        }
-        .navbar .buttons img {
-            width: 40px; /* Пропорциональная ширина */
-            height: 40px; /* Пропорциональная высота */
-            object-fit: contain; /* Сохраняем пропорции */
-            cursor: pointer;
-        }
         .user-container {
             width: 400px;
             margin: 0 auto;
@@ -51,12 +22,35 @@
             position: relative;
         }
         .user-container .logo-container {
-            text-align: center; /* Центровка логотипа */
+            display: flex;
+            justify-content: center;
+            align-items: center;
             margin-bottom: 20px;
+            position: relative;
         }
         .user-container .logo-container img {
-            max-width: 35%; /* Логотип занимает до 20% ширины блока */
+            max-width: 35%;
             height: auto;
+            margin-right: auto; /* Ensures the logo stays centered */
+        }
+        .user-container .logo-container .action-buttons {
+            position: absolute;
+            right: 0;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .user-container .logo-container .add-user-btn {
+            width: 19px; /* #<-------------------------add user */
+            height: 19px; /* #<-------------------------add user */
+            object-fit: contain;
+            cursor: pointer;
+        }
+        .user-container .logo-container .logout-btn {
+            width: 60px; /* #<---------------------logout */
+            height: 60px; /* #<---------------------logout */
+            object-fit: contain;
+            cursor: pointer;
         }
         .user-container .user {
             display: flex;
@@ -82,12 +76,13 @@
             height: 50px;
         }
         .user-container .user button img {
-            width: 30px;
-            height: 30px;
+            width: 17px; /* #<-------------------------delete user */
+            height: 17px; /* #<-------------------------delete user */
+            object-fit: contain;
         }
-        .user-container .user button img[src*="recycle.png"] {
-            width: 19px;
-            height: 19px;
+        .user-container .user button img[src*="download.png"] {
+            width: 24px; /* #<-------------------------download cfg */
+            height: 24px; /* #<-------------------------download cfg */
         }
         .user-container .user button:hover {
             background-color: #e0e0e0;
@@ -143,17 +138,13 @@
     </style>
 </head>
 <body>
-    <div class="navbar">
-        <div class="buttons">
-            <button onclick="addUser()">Add User</button>
-            <img src="{{ url_for('static', filename='images/logout.png') }}" alt="Logout" onclick="logout()">
-        </div>
-    </div>
-
     <div class="user-container">
-        <!-- Логотип ограничен до 20% ширины блока -->
         <div class="logo-container">
             <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo">
+            <div class="action-buttons">
+                <img class="add-user-btn" src="{{ url_for('static', filename='images/add.png') }}" alt="Add User" onclick="addUser()">
+                <img class="logout-btn" src="{{ url_for('static', filename='images/logout.png') }}" alt="Logout" onclick="logout()">
+            </div>
         </div>
         <div id="user-list">
             {% for user in users %}
