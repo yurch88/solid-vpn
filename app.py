@@ -62,8 +62,8 @@ def get_server_info():
                     server_info["allowed_ips"] = line.split("=")[1].strip()
                 if "DNS" in line:
                     server_info["dns"] = line.split("=")[1].strip()
-        server_info["allowed_ips"] = server_info.get("allowed_ips", "")
-        server_info["dns"] = server_info.get("dns", "")
+        server_info["allowed_ips"] = server_info.get("allowed_ips", "0.0.0.0/0")
+        server_info["dns"] = server_info.get("dns", "1.1.1.1")  # Устанавливаем значение по умолчанию
         return server_info
     except Exception as e:
         print(f"Error getting server info: {e}")
