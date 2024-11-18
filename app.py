@@ -28,7 +28,7 @@ WG_PORT = os.getenv("WG_PORT", "51820")
 WG_HOST = os.getenv("WG_HOST", "127.0.0.1")
 WG_DEFAULT_NETWORK = os.getenv("WG_DEFAULT_NETWORK", "10.8.0.0/24")
 WG_ALLOWED_IPS = os.getenv("WG_ALLOWED_IPS", "0.0.0.0/0, ::/0")
-USER_DATA_FILE = "users.json"
+USER_DATA_FILE = "/etc/wireguard/users.json"
 
 if not os.path.exists(USER_DATA_FILE):
     with open(USER_DATA_FILE, "w") as f:
@@ -187,4 +187,4 @@ def delete_config(username):
     return jsonify({"status": "success"}), 200
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=5002)
+    app.run(debug=True, host="0.0.0.0", port=80)
