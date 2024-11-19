@@ -1,12 +1,16 @@
 from flask import Flask, render_template, redirect, url_for, request, send_file, jsonify
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from dotenv import load_dotenv
 import os
 import subprocess
 import json
 from datetime import datetime
 
+# Загрузка переменных из .env файла
+load_dotenv()
+
 app = Flask(__name__)
-app.secret_key = "your_secret_key"
+app.secret_key = os.getenv("FLASK_SECRET_KEY")
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -21,15 +25,16 @@ class User(UserMixin):
 def load_user(user_id):
     return User(user_id)
 
-# Paths and defaults
-WG_CONFIG_DIR = os.getenv("WG_CONFIG_DIR", "/etc/wireguard")
-WG_INTERFACE = os.getenv("WG_INTERFACE", "wg0")
-WG_PORT = os.getenv("WG_PORT", "51820")
-WG_HOST = os.getenv("WG_HOST", "127.0.0.1")
-WG_DEFAULT_NETWORK = os.getenv("WG_DEFAULT_NETWORK", "10.8.0.0/24")
-WG_ALLOWED_IPS = os.getenv("WG_ALLOWED_IPS", "0.0.0.0/0, ::/0")
-USER_DATA_FILE = "/etc/wireguard/users.json"
+# Параметры WireGuard из .env
+WG_CONFIG_DIR = os.getenv("WG_CONFIG_DIR")
+WG_INTERFACE = os.getenv("WG_INTERFACE")
+WG_PORT = os.getenv("WG_PORT")
+WG_HOST = os.getenv("WG_HOST")
+WG_ALLOWED_IPS = os.getenv("WG_ALLOWED_IPS")
+WG_DNS = os.getenv("WG_DNS")
+USER_DATA_FILE = os.path.join(WG_CONFIG_DIR, "users.json")
 
+# Проверка наличия файла для данных пользователей
 if not os.path.exists(USER_DATA_FILE):
     with open(USER_DATA_FILE, "w") as f:
         json.dump({}, f)
@@ -52,7 +57,7 @@ def get_server_info():
                 server_info["interface"] = line.split("interface:")[1].strip()
             if "public key:" in line:
                 server_info["public_key"] = line.split("public key:")[1].strip()
-        with open(f"{WG_CONFIG_DIR}/wg0.conf", "r") as f:
+        with open(f"{WG_CONFIG_DIR}/{WG_INTERFACE}.conf", "r") as f:
             for line in f:
                 if "Address" in line:
                     server_info["address"] = line.split("=")[1].strip()
@@ -62,8 +67,8 @@ def get_server_info():
                     server_info["allowed_ips"] = line.split("=")[1].strip()
                 if "DNS" in line:
                     server_info["dns"] = line.split("=")[1].strip()
-        server_info["allowed_ips"] = server_info.get("allowed_ips", "0.0.0.0/0")
-        server_info["dns"] = server_info.get("dns", "1.1.1.1")  # Устанавливаем значение по умолчанию
+        server_info["allowed_ips"] = server_info.get("allowed_ips", WG_ALLOWED_IPS)
+        server_info["dns"] = server_info.get("dns", WG_DNS)
         return server_info
     except Exception as e:
         print(f"Error getting server info: {e}")
@@ -77,7 +82,7 @@ def index():
 def login():
     if request.method == "POST":
         password = request.form.get("password")
-        if password == "password":
+        if password == os.getenv("FLASK_LOGIN_PASSWORD"):  # Проверяем пароль из .env
             user = User(id=1)
             login_user(user)
             return redirect(url_for("dashboard"))
@@ -97,7 +102,6 @@ def dashboard():
 @app.route("/get_users")
 @login_required
 def get_users():
-    """Return the current list of users as JSON."""
     user_data = load_user_data()
     return jsonify(user_data)
 
@@ -134,7 +138,7 @@ DNS = {server_info['dns']}
 [Peer]
 PublicKey = {server_info['public_key']}
 PresharedKey = {preshared_key}
-Endpoint = {server_info['address']}:{server_info['port']}
+Endpoint = {WG_HOST}:{server_info['port']}
 AllowedIPs = {server_info['allowed_ips']}
 PersistentKeepalive = 25
 """
@@ -146,7 +150,7 @@ PersistentKeepalive = 25
         user_data[username] = {
             "created_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             "config_path": user_config_path,
-            "active": True  # Toggle is enabled by default
+            "active": True
         }
         save_user_data(user_data)
 
